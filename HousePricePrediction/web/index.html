@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Learning</title>
+    <style>
+        body {
+            font-family:"Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+        }
+    </style>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Connection test button clicked
+            $("#connection").click(function () {
+               $.ajax({
+                   url: "http://localhost:5000/",
+                   type: "GET",
+                   crossDomain: true,
+                   dataType: "json",
+                   success : function (response) {
+                       var resp = JSON.parse(response)
+                       alert(resp.status)
+                   },
+                   error: function (xhr, status) {
+                       alert("Error")
+                   }
+               })
+            })
+
+            // Linear Regression Predict
+            $("#linear").click(function () {
+                var veri = {};
+                veri["data"] = [1.0, 60.0, 65.0, 8450.0, 7.0, 5.0, 2003.0, 2003.0, 196.0, 706.0, 0.0, 150.0, 856.0, 856.0, 854.0, 0.0, 1710.0, 1.0, 0.0, 2.0, 1.0, 3.0, 1.0, 8.0, 0.0, 2003.0, 2.0, 548.0, 0.0, 61.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2008.0, 208500.0, 1.0];
+                $.ajax({
+                    url: "http://localhost:5000/house/linear",
+                    type: 'POST',
+                    data: JSON.stringify(veri),
+                    crossDomain: true,
+                    success: function (resp) {
+                        var res = JSON.parse(resp)
+                        alert(res)
+                    },
+                    error: function (xhr, err) {
+                        alert("Error for prediction")
+                    }
+
+                })
+            })
+
+            // Ridge Regularization
+            $("#ridge").click(function () {
+                var veri = {};
+                veri["data"] = [1.0, 60.0, 65.0, 8450.0, 7.0, 5.0, 2003.0, 2003.0, 196.0, 706.0, 0.0, 150.0, 856.0, 856.0, 854.0, 0.0, 1710.0, 1.0, 0.0, 2.0, 1.0, 3.0, 1.0, 8.0, 0.0, 2003.0, 2.0, 548.0, 0.0, 61.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2008.0, 208500.0, 1.0];
+                $.ajax({
+                    type:"POST",
+                    url: "http://localhost:5000/house/ridge",
+                    data: JSON.stringify(veri),
+                    crossDomain: true,
+                    success: function (resp) {
+                        var res = (JSON.parse(resp));
+                        alert(res);
+                    },
+                    error: function () {
+                        alert("Errrrr")
+                    }
+                })
+            })
+
+
+        });
+    </script>
+</head>
+<body>
+    <button id="connection">Connection is OK?</button>
+    <div align="center" style="margin-top:100px">
+        <h1>Linear Regression</h1>
+        <button id="linear">Predict</button> Actual Value : 208500 $
+        <button id="ridge">Ridge</button>
+    </div>
+
+</body>
+</html>
